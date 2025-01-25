@@ -2,31 +2,25 @@
   import { goto } from "$app/navigation";
   import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
   import { auth } from "$lib/firebase/firebase.client";
+  import type { PageData } from "./$types";
 
-  export let data;
-  // console.log(data.user)
-  // $: if (data.user) {
-  //   console.log(data.user)
-  // }
+  export let data: PageData;
 
   async function loginWithGoogle() {
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
+      const userIdToken = await result.user.getIdToken()
 
       const response = await fetch('api/session', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({token: result._tokenResponse.idToken})
+        body: JSON.stringify({token: userIdToken})
       })
-
-      console.log(response)
 
       if (response) {
         goto("/")
       }
-
-      const {displayName, email, photoURL, uid} = result?.user;
 
     } catch (error) {
       console.error('Error signing in with Google: ', error);
@@ -35,6 +29,8 @@
 
 </script>
 
-<div class="login-form">
-  <button on:click={loginWithGoogle}>Login with Google</button>
-</div>
+{#if !data.user}
+  <div class="login-form">
+    <button on:click={loginWithGoogle}>Login with Google</button>
+  </div>
+{/if}

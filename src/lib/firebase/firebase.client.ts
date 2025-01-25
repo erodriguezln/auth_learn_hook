@@ -1,6 +1,6 @@
 import { initializeApp, type FirebaseApp, type FirebaseOptions } from "firebase/app";
 import { type Auth, signOut as firebaseSignOut } from "firebase/auth";
-import { getAuth } from "firebase/auth";
+import { getAuth, setPersistence, type Persistence } from "firebase/auth";
 
 export let app: FirebaseApp;
 export let auth: Auth;
@@ -19,7 +19,6 @@ export const initializeFirebase = () => {
   if (!app) {
     const app = initializeApp(firebaseConfig);
     auth = getAuth(app)
-    // console.log(auth)
   }
 }
 

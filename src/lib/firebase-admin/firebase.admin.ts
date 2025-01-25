@@ -12,9 +12,6 @@ const firebaseConfig: ServiceAccount = {
   clientEmail: import.meta.env.VITE_FIREBASE_CLIENT_EMAIL,
 };
 
-// console.log("Is browser:", browser);
-// console.log("Number of Firebase apps:", admin.apps.length);
-
 if (!browser && admin.apps.length === 0) {
   const cert = admin.credential.cert(firebaseConfig)
   app = admin.initializeApp({

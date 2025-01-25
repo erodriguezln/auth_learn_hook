@@ -3,10 +3,7 @@
   import { signOut } from "$lib/firebase/firebase.client";
 
   export let data;
-  // cuando pasas un writable a front, se ve la interface de writable no mas.
-  // console.log(data.userStore)
-  //
-  // console.log(data.user)
+  console.log(data.user)
 
   async function handleLogout() {
     try {
