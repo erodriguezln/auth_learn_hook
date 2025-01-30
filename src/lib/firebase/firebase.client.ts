@@ -16,10 +16,14 @@ const firebaseConfig: FirebaseOptions = {
 
 // Initialize Firebase
 export const initializeFirebase = () => {
+  // console.log(`initial: ${auth}`)
   if (!app) {
-    const app = initializeApp(firebaseConfig);
+    app = initializeApp(firebaseConfig);
     auth = getAuth(app)
+    console.log("Firebase SDK initialized successfully.");
+    console.log(`auth: ${JSON.stringify(auth, null, 2)}`)
   }
 }
+
 
 export const signOut = () => firebaseSignOut(auth);

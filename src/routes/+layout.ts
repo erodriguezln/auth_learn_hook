@@ -3,13 +3,13 @@ import { browser } from "$app/environment";
 
 export async function load({data, url}) {
 
-  if (browser) {
+  // if (browser) {
     try {
       initializeFirebase()
     } catch (e) {
       console.error(e)
     }
-  }
+  // }
 
   return {
     user: data.user,

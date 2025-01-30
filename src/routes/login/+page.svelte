@@ -1,36 +1,40 @@
 <script lang="ts">
-  import { goto } from "$app/navigation";
-  import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-  import { auth } from "$lib/firebase/firebase.client";
-  import type { PageData } from "./$types";
+  import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+  import { auth } from '$lib/firebase/firebase.client';
+  import type { PageData } from './$types';
 
   export let data: PageData;
+  let form: HTMLFormElement;
 
   async function loginWithGoogle() {
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      const userIdToken = await result.user.getIdToken()
+      const userIdToken = await result.user.getIdToken();
 
-      const response = await fetch('api/session', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({token: userIdToken})
-      })
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'token';
+      input.value = userIdToken;
 
-      if (response) {
-        goto("/")
-      }
-
+      form.appendChild(input);
+      form.submit();
     } catch (error) {
       console.error('Error signing in with Google: ', error);
     }
   }
-
 </script>
 
-{#if !data.user}
-  <div class="login-form">
-    <button on:click={loginWithGoogle}>Login with Google</button>
-  </div>
-{/if}
+<!--{#if !data.user}-->
+<div class="login-form">
+  <form
+      method="POST"
+      bind:this={form}
+  />
+  <button
+      type="button"
+      on:click={loginWithGoogle}>Login with Google
+  </button
+  >
+</div>
+<!--{/if}-->
